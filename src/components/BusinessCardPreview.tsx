@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Linkedin, Globe, Mail, Phone, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Linkedin, Globe, Mail, Phone, ChevronLeft, ChevronRight, Check } from 'lucide-react';
 
 interface BusinessCardProps {
   name: string;
