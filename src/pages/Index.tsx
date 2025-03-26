@@ -5,6 +5,7 @@ import Hero from '@/components/Hero';
 import StatsDashboard from '@/components/StatsDashboard';
 import PortfolioPreview from '@/components/PortfolioPreview';
 import BusinessCardPreview from '@/components/BusinessCardPreview';
+import ResumeBuilderPreview from '@/components/ResumeBuilderPreview';
 import PricingTiers from '@/components/PricingTiers';
 import SignupForm from '@/components/SignupForm';
 import Footer from '@/components/Footer';
@@ -17,6 +18,7 @@ const Index: React.FC = () => {
         <Hero />
         <StatsDashboard />
         <PortfolioPreview />
+        <ResumeBuilderPreview />
         <BusinessCardPreview />
         <PricingTiers />
         <SignupForm />
