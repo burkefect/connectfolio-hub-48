@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -6,12 +7,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2, FileDown, Eye, List } from "lucide-react";
+import { Plus, Trash2, FileDown, Eye } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Switch } from "@/components/ui/switch";
-import { toast } from "sonner";
 import ResumePreview from "@/components/ResumePreview";
 
 type FormData = {
@@ -24,7 +23,6 @@ type FormData = {
     linkedin?: string;
   };
   summary: string;
-  summaryBullets: Array<string>;
   education: Array<{
     id: string;
     school: string;
@@ -50,8 +48,6 @@ type FormData = {
 
 const ResumeForm: React.FC = () => {
   const [selectedTemplate, setSelectedTemplate] = useState('classic');
-  const [useAIBullets, setUseAIBullets] = useState(false);
-  const [isGeneratingBullets, setIsGeneratingBullets] = useState(false);
   
   const form = useForm<FormData>({
     defaultValues: {
@@ -64,7 +60,6 @@ const ResumeForm: React.FC = () => {
         linkedin: '',
       },
       summary: '',
-      summaryBullets: [],
       education: [
         {
           id: '1',
@@ -92,32 +87,6 @@ const ResumeForm: React.FC = () => {
       templateId: 'classic',
     },
   });
-
-  const generateBulletPoints = () => {
-    const summary = form.getValues('summary');
-    
-    if (!summary || summary.trim() === '') {
-      toast.error("Please provide a summary first");
-      return;
-    }
-    
-    setIsGeneratingBullets(true);
-    
-    setTimeout(() => {
-      const sentences = summary.split(/[.!?]+/).filter(s => s.trim().length > 0);
-      const bulletPoints = sentences.map(sentence => {
-        const words = sentence.trim().split(' ');
-        if (words.length > 0) {
-          words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1).toLowerCase();
-        }
-        return words.join(' ');
-      });
-      
-      form.setValue('summaryBullets', bulletPoints);
-      setIsGeneratingBullets(false);
-      toast.success("Bullet points generated successfully");
-    }, 1500);
-  };
 
   const handleAddEducation = () => {
     const currentEducation = form.getValues('education');
@@ -189,29 +158,9 @@ const ResumeForm: React.FC = () => {
     );
   };
 
-  const handleAddBulletPoint = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && e.currentTarget.value.trim() !== '') {
-      e.preventDefault();
-      const newBullet = e.currentTarget.value.trim();
-      const currentBullets = form.getValues('summaryBullets') || [];
-      
-      if (!currentBullets.includes(newBullet)) {
-        form.setValue('summaryBullets', [...currentBullets, newBullet]);
-        e.currentTarget.value = '';
-      }
-    }
-  };
-
-  const handleRemoveBulletPoint = (bullet: string) => {
-    const currentBullets = form.getValues('summaryBullets');
-    form.setValue(
-      'summaryBullets',
-      currentBullets.filter((b) => b !== bullet)
-    );
-  };
-
   const onSubmit = (data: FormData) => {
     console.log(data);
+    // In a real app, this would generate and download the resume
     alert('Resume data submitted. In a real app, this would generate and download your resume.');
   };
 
@@ -222,6 +171,7 @@ const ResumeForm: React.FC = () => {
       <div className="lg:col-span-2">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            {/* Personal Information */}
             <div className="bg-card rounded-lg border p-6">
               <h2 className="text-xl font-semibold mb-4">Personal Information</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -311,32 +261,9 @@ const ResumeForm: React.FC = () => {
               </div>
             </div>
             
+            {/* Professional Summary */}
             <div className="bg-card rounded-lg border p-6">
               <h2 className="text-xl font-semibold mb-4">Professional Summary</h2>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm font-medium">Manual Input</span>
-                  <Switch
-                    checked={useAIBullets}
-                    onCheckedChange={setUseAIBullets}
-                  />
-                  <span className="text-sm font-medium">AI Bullet Points</span>
-                </div>
-                
-                {useAIBullets && (
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={generateBulletPoints}
-                    disabled={isGeneratingBullets}
-                  >
-                    <List className="h-4 w-4 mr-2" />
-                    {isGeneratingBullets ? "Generating..." : "Generate Bullets"}
-                  </Button>
-                )}
-              </div>
-              
               <FormField
                 control={form.control}
                 name="summary"
@@ -352,50 +279,14 @@ const ResumeForm: React.FC = () => {
                     </FormControl>
                     <FormDescription>
                       Keep it concise, around 3-4 sentences highlighting your experience and value.
-                      {useAIBullets && " Click 'Generate Bullets' to create bullet points from your summary."}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
-              {useAIBullets && (
-                <div className="mt-4">
-                  <FormItem>
-                    <FormLabel>Summary Bullet Points</FormLabel>
-                    <FormControl>
-                      <Input 
-                        placeholder="Add a bullet point and press Enter" 
-                        onKeyDown={handleAddBulletPoint}
-                        disabled={isGeneratingBullets}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Add impactful bullet points that highlight your achievements and skills.
-                    </FormDescription>
-                  </FormItem>
-                  
-                  <div className="flex flex-wrap gap-2 mt-4">
-                    {form.getValues().summaryBullets.map((bullet) => (
-                      <Badge key={bullet} variant="secondary" className="flex items-center gap-1 px-3 py-1">
-                        {bullet}
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveBulletPoint(bullet)}
-                          className="ml-1 h-4 w-4 rounded-full hover:bg-muted flex items-center justify-center"
-                        >
-                          ×
-                        </button>
-                      </Badge>
-                    ))}
-                    {form.getValues().summaryBullets.length === 0 && (
-                      <p className="text-sm text-muted-foreground">No bullet points added yet.</p>
-                    )}
-                  </div>
-                </div>
-              )}
             </div>
             
+            {/* Work Experience */}
             <div className="bg-card rounded-lg border p-6">
               <h2 className="text-xl font-semibold mb-4">Work Experience</h2>
               <div className="space-y-6">
@@ -531,6 +422,7 @@ const ResumeForm: React.FC = () => {
               </div>
             </div>
             
+            {/* Education */}
             <div className="bg-card rounded-lg border p-6">
               <h2 className="text-xl font-semibold mb-4">Education</h2>
               <div className="space-y-6">
@@ -676,6 +568,7 @@ const ResumeForm: React.FC = () => {
               </div>
             </div>
             
+            {/* Skills */}
             <div className="bg-card rounded-lg border p-6">
               <h2 className="text-xl font-semibold mb-4">Skills</h2>
               <FormItem>
@@ -710,6 +603,7 @@ const ResumeForm: React.FC = () => {
               </div>
             </div>
             
+            {/* Template Selection */}
             <div className="bg-card rounded-lg border p-6">
               <h2 className="text-xl font-semibold mb-4">Resume Template</h2>
               <FormField
@@ -828,4 +722,3 @@ const ResumeForm: React.FC = () => {
 };
 
 export default ResumeForm;
-
