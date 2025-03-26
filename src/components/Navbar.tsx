@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Zap } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -23,8 +23,11 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           <div className="flex items-center">
-            <a href="#" className="font-bold text-xl tracking-tight">
-              ConnectFolio
+            <a href="#" className="font-bold text-xl tracking-tight flex items-center gap-1.5">
+              <div className="bg-primary rounded-md p-1.5 text-primary-foreground flex items-center justify-center">
+                <Zap size={18} className="stroke-[2.5px]" />
+              </div>
+              <span>Quikfolio</span>
             </a>
           </div>
           

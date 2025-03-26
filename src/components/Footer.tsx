@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ExternalLink, Mail, MapPin } from 'lucide-react';
+import { ExternalLink, Mail, MapPin, Zap } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -8,7 +8,12 @@ const Footer: React.FC = () => {
       <div className="container px-4 sm:px-6 lg:px-8 py-12 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
-            <h3 className="text-xl font-bold mb-4">ConnectFolio</h3>
+            <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+              <div className="bg-primary-foreground/10 rounded-md p-1.5 text-primary-foreground flex items-center justify-center">
+                <Zap size={18} className="stroke-[2.5px]" />
+              </div>
+              Quikfolio
+            </h3>
             <p className="text-primary-foreground/80 max-w-sm mb-6">
               Helping job seekers land their dream roles with beautifully designed 
               portfolio websites that showcase their skills and experience.
@@ -66,7 +71,7 @@ const Footer: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <p className="text-sm text-primary-foreground/70">
-                &copy; {new Date().getFullYear()} ConnectFolio. All rights reserved.
+                &copy; {new Date().getFullYear()} Quikfolio. All rights reserved.
               </p>
             </div>
             <div className="flex space-x-6">

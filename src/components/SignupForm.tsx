@@ -157,7 +157,7 @@ const SignupForm: React.FC = () => {
               
               <div className="mt-8 pt-6 border-t border-primary-foreground/20">
                 <blockquote className="italic opacity-80">
-                  "My ConnectFolio site helped me land interviews at top tech companies after just 2 weeks."
+                  "My Quikfolio site helped me land interviews at top tech companies after just 2 weeks."
                 </blockquote>
                 <div className="mt-2 flex items-center">
                   <div className="w-8 h-8 rounded-full bg-white/20 mr-2"></div>
