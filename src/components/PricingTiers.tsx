@@ -26,7 +26,7 @@ interface PricingPlan {
 
 const plans: PricingPlan[] = [
   {
-    name: "Starter",
+    name: "Basic",
     price: {
       monthly: 9.99,
       annually: 7.99,
@@ -39,18 +39,16 @@ const plans: PricingPlan[] = [
       { included: true, text: "Website hosting included" },
       { included: true, text: "Basic analytics" },
       { included: true, text: "Content editing capabilities" },
-      { included: false, text: "Access to premium templates" },
+      { included: true, text: "Access to Standard templates" },
+      { included: false, text: "Access to Premium templates" },
       { included: false, text: "Priority support" },
-      { included: false, text: "PDF resume generation" },
-      { included: false, text: "Digital business card" },
-      { included: false, text: "Monthly SEO optimization" },
       { included: false, text: "Early access to new features" },
     ],
     availableTemplates: ["Minimalist", "Professional", "Industry-Specific"],
     buttonText: "Get Started",
   },
   {
-    name: "Professional",
+    name: "Pro",
     price: {
       monthly: 19.99,
       annually: 15.99,
@@ -64,41 +62,13 @@ const plans: PricingPlan[] = [
       { included: true, text: "Website hosting included" },
       { included: true, text: "Advanced analytics" },
       { included: true, text: "Content editing capabilities" },
-      { included: true, text: "Access to ALL premium templates" },
+      { included: true, text: "Access to ALL templates" },
       { included: true, text: "Priority support" },
-      { included: true, text: "PDF resume generation" },
-      { included: true, text: "Digital business card" },
-      { included: true, text: "Monthly SEO optimization" },
       { included: true, text: "Early access to new features" },
+      { included: true, text: "Digital business card" },
     ],
     availableTemplates: ["Minimalist", "Professional", "Industry-Specific", "Creative", "Interactive"],
     buttonText: "Get Pro",
-  },
-  {
-    name: "Executive",
-    price: {
-      monthly: 29.99,
-      annually: 23.99,
-    },
-    description: "Complete career presence solution",
-    features: [
-      { included: true, text: "Custom firstnamelastname.quikfolio.com subdomain" },
-      { included: true, text: "Custom domain name option" },
-      { included: true, text: "Mobile-optimized portfolio" },
-      { included: true, text: "LinkedIn data integration" },
-      { included: true, text: "Website hosting included" },
-      { included: true, text: "Advanced analytics & reports" },
-      { included: true, text: "Content editing capabilities" },
-      { included: true, text: "Access to ALL premium templates" },
-      { included: true, text: "24/7 VIP support" },
-      { included: true, text: "PDF resume generation" },
-      { included: true, text: "Digital & printable business cards" },
-      { included: true, text: "Monthly SEO optimization" },
-      { included: true, text: "Early access to new features" },
-      { included: true, text: "Dedicated account manager" },
-    ],
-    availableTemplates: ["Minimalist", "Professional", "Industry-Specific", "Creative", "Interactive"],
-    buttonText: "Get Executive",
   }
 ];
 
@@ -148,7 +118,7 @@ const PricingTiers: React.FC = () => {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {plans.map((plan, index) => (
             <div 
               key={plan.name}
@@ -161,7 +131,7 @@ const PricingTiers: React.FC = () => {
             >
               {plan.highlighted && (
                 <div className="absolute top-0 left-0 right-0 bg-primary text-primary-foreground text-center text-sm py-1">
-                  Most Popular
+                  Recommended
                 </div>
               )}
               <div className={`p-6 ${plan.highlighted ? 'pt-8' : ''}`}>

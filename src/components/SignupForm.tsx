@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom';
 
 const SignupForm: React.FC = () => {
   const location = useLocation();
-  const [selectedPlan, setSelectedPlan] = useState<string>('Starter');
+  const [selectedPlan, setSelectedPlan] = useState<string>('Basic');
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -68,7 +68,7 @@ const SignupForm: React.FC = () => {
               <h2 className="text-2xl font-bold mb-2">Create Your Portfolio</h2>
               <p className="text-foreground/70 mb-6">
                 Connect your LinkedIn profile to get started with a professionally designed portfolio website.
-                {selectedPlan !== 'Starter' && ' You selected the ' + selectedPlan + ' plan.'}
+                {selectedPlan !== 'Basic' && ' You selected the ' + selectedPlan + ' plan.'}
               </p>
               
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -188,15 +188,20 @@ const SignupForm: React.FC = () => {
                   <span className="mr-3 mt-1">✓</span>
                   <span>Website hosting and technical maintenance included</span>
                 </li>
-                {selectedPlan !== 'Starter' && (
+                {selectedPlan === 'Basic' ? (
+                  <li className="flex items-start">
+                    <span className="mr-3 mt-1">✓</span>
+                    <span>Access to Standard templates (Minimalist, Professional, Industry-Specific)</span>
+                  </li>
+                ) : (
                   <>
                     <li className="flex items-start">
                       <span className="mr-3 mt-1">✓</span>
-                      <span>Access to premium templates (Creative & Interactive)</span>
+                      <span>Access to ALL templates (including Creative & Interactive)</span>
                     </li>
                     <li className="flex items-start">
                       <span className="mr-3 mt-1">✓</span>
-                      <span>Priority support and additional customization options</span>
+                      <span>Priority support and early access to new features</span>
                     </li>
                   </>
                 )}
