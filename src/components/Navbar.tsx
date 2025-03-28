@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X, Zap, LogOut, User } from 'lucide-react';
@@ -51,6 +50,9 @@ const Navbar: React.FC = () => {
           </div>
           
           <nav className="hidden md:flex items-center space-x-8">
+            <Link to="/about" className="text-foreground/80 hover:text-foreground transition-all-300">
+              About
+            </Link>
             <a href="#features" className="text-foreground/80 hover:text-foreground transition-all-300">
               Features
             </a>
@@ -106,13 +108,19 @@ const Navbar: React.FC = () => {
         </div>
       </div>
       
-      {/* Mobile menu */}
       <div 
         className={`md:hidden transition-all-300 overflow-hidden ${
           mobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white/90 backdrop-blur-xl">
+          <Link 
+            to="/about" 
+            className="block px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            About
+          </Link>
           <a 
             href="#features" 
             className="block px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground"
