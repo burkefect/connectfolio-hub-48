@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Check } from 'lucide-react';
+import { Check, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 type PricingPeriod = 'monthly' | 'annually';
 
@@ -18,6 +19,7 @@ interface PricingPlan {
   };
   description: string;
   features: PlanFeature[];
+  availableTemplates: string[];
   highlighted?: boolean;
   buttonText: string;
 }
@@ -31,16 +33,20 @@ const plans: PricingPlan[] = [
     },
     description: "Perfect for new job seekers",
     features: [
-      { included: true, text: "Custom domain name" },
+      { included: true, text: "Custom firstnamelastname.quikfolio.com subdomain" },
       { included: true, text: "Mobile-optimized portfolio" },
       { included: true, text: "LinkedIn data integration" },
+      { included: true, text: "Website hosting included" },
       { included: true, text: "Basic analytics" },
-      { included: false, text: "Custom color themes" },
+      { included: true, text: "Content editing capabilities" },
+      { included: false, text: "Access to premium templates" },
       { included: false, text: "Priority support" },
       { included: false, text: "PDF resume generation" },
       { included: false, text: "Digital business card" },
       { included: false, text: "Monthly SEO optimization" },
+      { included: false, text: "Early access to new features" },
     ],
+    availableTemplates: ["Minimalist", "Professional", "Industry-Specific"],
     buttonText: "Get Started",
   },
   {
@@ -52,16 +58,20 @@ const plans: PricingPlan[] = [
     description: "For serious career advancement",
     highlighted: true,
     features: [
-      { included: true, text: "Custom domain name" },
+      { included: true, text: "Custom firstnamelastname.quikfolio.com subdomain" },
       { included: true, text: "Mobile-optimized portfolio" },
       { included: true, text: "LinkedIn data integration" },
+      { included: true, text: "Website hosting included" },
       { included: true, text: "Advanced analytics" },
-      { included: true, text: "Custom color themes" },
+      { included: true, text: "Content editing capabilities" },
+      { included: true, text: "Access to ALL premium templates" },
       { included: true, text: "Priority support" },
       { included: true, text: "PDF resume generation" },
       { included: true, text: "Digital business card" },
-      { included: false, text: "Monthly SEO optimization" },
+      { included: true, text: "Monthly SEO optimization" },
+      { included: true, text: "Early access to new features" },
     ],
+    availableTemplates: ["Minimalist", "Professional", "Industry-Specific", "Creative", "Interactive"],
     buttonText: "Get Pro",
   },
   {
@@ -72,22 +82,29 @@ const plans: PricingPlan[] = [
     },
     description: "Complete career presence solution",
     features: [
-      { included: true, text: "Custom domain name" },
+      { included: true, text: "Custom firstnamelastname.quikfolio.com subdomain" },
+      { included: true, text: "Custom domain name option" },
       { included: true, text: "Mobile-optimized portfolio" },
       { included: true, text: "LinkedIn data integration" },
+      { included: true, text: "Website hosting included" },
       { included: true, text: "Advanced analytics & reports" },
-      { included: true, text: "Custom color themes" },
+      { included: true, text: "Content editing capabilities" },
+      { included: true, text: "Access to ALL premium templates" },
       { included: true, text: "24/7 VIP support" },
       { included: true, text: "PDF resume generation" },
       { included: true, text: "Digital & printable business cards" },
       { included: true, text: "Monthly SEO optimization" },
+      { included: true, text: "Early access to new features" },
+      { included: true, text: "Dedicated account manager" },
     ],
+    availableTemplates: ["Minimalist", "Professional", "Industry-Specific", "Creative", "Interactive"],
     buttonText: "Get Executive",
   }
 ];
 
 const PricingTiers: React.FC = () => {
   const [period, setPeriod] = useState<PricingPeriod>('monthly');
+  const navigate = useNavigate();
   
   const togglePeriod = () => {
     setPeriod(period === 'monthly' ? 'annually' : 'monthly');
@@ -102,7 +119,7 @@ const PricingTiers: React.FC = () => {
           </h2>
           <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
             Choose the perfect plan to elevate your professional presence online.
-            All plans include hosting and domain registration.
+            All plans include hosting and your personal subdomain.
           </p>
           
           {/* Period toggle */}
@@ -158,16 +175,32 @@ const PricingTiers: React.FC = () => {
                 </div>
                 <Button 
                   className={`w-full mb-6 ${plan.highlighted ? '' : 'bg-foreground/90 hover:bg-foreground'}`}
+                  onClick={() => navigate('/auth', { state: { plan: plan.name } })}
                 >
                   {plan.buttonText}
                 </Button>
+                
+                {/* Available Templates */}
+                <div className="mb-4">
+                  <h4 className="font-medium text-sm mb-2">Available Templates:</h4>
+                  <ul className="space-y-1">
+                    {plan.availableTemplates.map((template, i) => (
+                      <li key={i} className="text-sm flex items-center text-foreground/80">
+                        <Check className="h-3.5 w-3.5 text-green-500 mr-2" />
+                        {template}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <h4 className="font-medium text-sm mb-2">Features:</h4>
                 <ul className="space-y-3">
                   {plan.features.map((feature, i) => (
                     <li key={i} className="flex items-start">
                       <span className={`mr-2 mt-1 ${feature.included ? 'text-green-500' : 'text-foreground/40'}`}>
-                        <Check className="h-4 w-4" />
+                        {feature.included ? <Check className="h-4 w-4" /> : <X className="h-4 w-4" />}
                       </span>
-                      <span className={feature.included ? '' : 'text-foreground/50 line-through'}>
+                      <span className={feature.included ? '' : 'text-foreground/50'}>
                         {feature.text}
                       </span>
                     </li>
@@ -179,12 +212,13 @@ const PricingTiers: React.FC = () => {
         </div>
         
         <div className="mt-16 text-center p-6 bg-secondary/50 rounded-xl max-w-3xl mx-auto animate-fade-in animation-delay-600">
-          <h3 className="text-xl font-semibold mb-2">Enterprise Solutions</h3>
+          <h3 className="text-xl font-semibold mb-2">Why We Charge a Monthly Fee</h3>
           <p className="text-foreground/70 mb-4">
-            Need a custom solution for your organization? We offer enterprise plans for 
-            companies looking to provide portfolio services to multiple employees.
+            Your subscription covers high-performance website hosting, automatic subdomain creation,
+            ongoing technical maintenance, and continuous platform updates. We take care of all the technical
+            aspects so you can focus on showcasing your professional achievements.
           </p>
-          <Button variant="outline">Contact Sales</Button>
+          <Button variant="outline" onClick={() => navigate('/auth')}>Get Started Today</Button>
         </div>
       </div>
     </section>

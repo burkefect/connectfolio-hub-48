@@ -1,11 +1,14 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Linkedin } from 'lucide-react';
+import { Linkedin, Globe } from 'lucide-react';
 import { toast } from "sonner";
+import { useLocation } from 'react-router-dom';
 
 const SignupForm: React.FC = () => {
+  const location = useLocation();
+  const [selectedPlan, setSelectedPlan] = useState<string>('Starter');
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -13,6 +16,24 @@ const SignupForm: React.FC = () => {
     linkedinUrl: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [subdomainPreview, setSubdomainPreview] = useState('yourname.quikfolio.com');
+  
+  useEffect(() => {
+    // Check if a plan was passed via location state
+    if (location.state && location.state.plan) {
+      setSelectedPlan(location.state.plan);
+    }
+  }, [location]);
+  
+  useEffect(() => {
+    // Update subdomain preview based on name fields
+    if (formData.firstName && formData.lastName) {
+      const subdomain = `${formData.firstName.toLowerCase()}${formData.lastName.toLowerCase()}.quikfolio.com`;
+      setSubdomainPreview(subdomain);
+    } else {
+      setSubdomainPreview('yourname.quikfolio.com');
+    }
+  }, [formData.firstName, formData.lastName]);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,7 +47,7 @@ const SignupForm: React.FC = () => {
     // Simulate form submission
     setTimeout(() => {
       toast.success("Profile creation started!", {
-        description: "We're analyzing your LinkedIn profile to create your portfolio.",
+        description: `We're setting up your portfolio at ${subdomainPreview}`,
       });
       setIsSubmitting(false);
       setFormData({
@@ -47,6 +68,7 @@ const SignupForm: React.FC = () => {
               <h2 className="text-2xl font-bold mb-2">Create Your Portfolio</h2>
               <p className="text-foreground/70 mb-6">
                 Connect your LinkedIn profile to get started with a professionally designed portfolio website.
+                {selectedPlan !== 'Starter' && ' You selected the ' + selectedPlan + ' plan.'}
               </p>
               
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -79,6 +101,19 @@ const SignupForm: React.FC = () => {
                       onChange={handleChange}
                     />
                   </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="subdomain" className="block text-sm font-medium text-foreground/70 mb-1">
+                    Your Portfolio Subdomain
+                  </label>
+                  <div className="flex items-center p-3 bg-secondary/30 rounded-md">
+                    <Globe className="h-4 w-4 text-primary mr-2" />
+                    <span className="text-sm font-medium">{subdomainPreview}</span>
+                  </div>
+                  <p className="text-xs text-foreground/60 mt-1">
+                    This will be your portfolio's web address
+                  </p>
                 </div>
                 
                 <div>
@@ -121,7 +156,7 @@ const SignupForm: React.FC = () => {
                 </div>
                 
                 <Button type="submit" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? "Processing..." : "Create Your Portfolio"}
+                  {isSubmitting ? "Processing..." : `Create Your ${selectedPlan} Portfolio`}
                 </Button>
                 
                 <p className="text-xs text-center text-foreground/60 mt-4">
@@ -135,7 +170,7 @@ const SignupForm: React.FC = () => {
               <ul className="space-y-4">
                 <li className="flex items-start">
                   <span className="mr-3 mt-1">✓</span>
-                  <span>Professional portfolio website with your custom domain</span>
+                  <span>Professional portfolio website with your custom subdomain</span>
                 </li>
                 <li className="flex items-start">
                   <span className="mr-3 mt-1">✓</span>
@@ -151,8 +186,20 @@ const SignupForm: React.FC = () => {
                 </li>
                 <li className="flex items-start">
                   <span className="mr-3 mt-1">✓</span>
-                  <span>Analytics dashboard to track portfolio performance</span>
+                  <span>Website hosting and technical maintenance included</span>
                 </li>
+                {selectedPlan !== 'Starter' && (
+                  <>
+                    <li className="flex items-start">
+                      <span className="mr-3 mt-1">✓</span>
+                      <span>Access to premium templates (Creative & Interactive)</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="mr-3 mt-1">✓</span>
+                      <span>Priority support and additional customization options</span>
+                    </li>
+                  </>
+                )}
               </ul>
               
               <div className="mt-8 pt-6 border-t border-primary-foreground/20">
