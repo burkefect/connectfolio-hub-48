@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -14,7 +13,8 @@ import {
   Monitor,
   Layers,
   ChevronRight,
-  ChevronDown
+  ChevronDown,
+  Twitter
 } from 'lucide-react';
 
 const InteractiveTemplate: React.FC = () => {
@@ -98,19 +98,19 @@ const InteractiveTemplate: React.FC = () => {
   const faqs = [
     {
       question: 'What technologies do you work with?',
-      answer: 'I specialize in modern web technologies including React, TypeScript, Node.js, and GraphQL. I also have experience with Next.js, Vue.js, and various CSS frameworks.'
+      answer: "I specialize in modern web technologies including React, TypeScript, Node.js, and GraphQL. I also have experience with Next.js, Vue.js, and various CSS frameworks."
     },
     {
       question: 'Do you take on freelance projects?',
-      answer: 'Yes! I'm available for freelance projects, particularly those involving interactive web applications, e-commerce solutions, or innovative digital experiences.'
+      answer: "Yes! I'm available for freelance projects, particularly those involving interactive web applications, e-commerce solutions, or innovative digital experiences."
     },
     {
       question: 'What is your development process?',
-      answer: 'I follow an agile approach, starting with thorough requirements gathering, followed by design prototyping, iterative development with regular client check-ins, testing, and deployment with ongoing support.'
+      answer: "I follow an agile approach, starting with thorough requirements gathering, followed by design prototyping, iterative development with regular client check-ins, testing, and deployment with ongoing support."
     },
     {
       question: 'How long does a typical project take?',
-      answer: 'Project timelines vary based on complexity. A simple website might take 2-4 weeks, while a complex web application could take 2-3 months. I'll provide a detailed timeline during our initial consultation.'
+      answer: "Project timelines vary based on complexity. A simple website might take 2-4 weeks, while a complex web application could take 2-3 months. I'll provide a detailed timeline during our initial consultation."
     }
   ];
   
@@ -619,7 +619,6 @@ const InteractiveTemplate: React.FC = () => {
   );
 };
 
-// Since we're using the Map icon but it's not imported, we need to create it
 const Map = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg
