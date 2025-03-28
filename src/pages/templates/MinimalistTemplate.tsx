@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, GitHub, Linkedin, Mail, FileText, MapPin } from 'lucide-react';
+import { ArrowLeft, Github, Linkedin, Mail, FileText, MapPin } from 'lucide-react';
 
 const MinimalistTemplate: React.FC = () => {
   return (
@@ -27,7 +26,7 @@ const MinimalistTemplate: React.FC = () => {
           <p className="text-xl text-gray-600 mb-6">Frontend Developer</p>
           <div className="flex justify-center gap-3">
             <Button variant="outline" size="sm" className="rounded-full gap-2">
-              <GitHub className="h-4 w-4" />
+              <Github className="h-4 w-4" />
               GitHub
             </Button>
             <Button variant="outline" size="sm" className="rounded-full gap-2">
