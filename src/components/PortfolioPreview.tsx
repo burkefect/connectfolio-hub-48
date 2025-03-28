@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,35 +18,35 @@ const templates = [
     name: "Minimalist",
     description: "Clean, modern design that puts your content front and center",
     image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1600&auto=format&fit=crop",
-    previewUrl: "#minimalist"
+    previewUrl: "/templates/minimalist"
   },
   {
     id: 2,
     name: "Creative",
     description: "Bold, artistic layout perfect for showcasing visual work",
     image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1600&auto=format&fit=crop",
-    previewUrl: "#creative"
+    previewUrl: "/templates/creative"
   },
   {
     id: 3,
     name: "Professional",
     description: "Polished, corporate-friendly design for executive roles",
     image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=1600&auto=format&fit=crop",
-    previewUrl: "#professional"
+    previewUrl: "/templates/professional"
   },
   {
     id: 4,
     name: "Interactive",
     description: "Dynamic design with animations and interactive elements",
     image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?q=80&w=1600&auto=format&fit=crop",
-    previewUrl: "#interactive"
+    previewUrl: "/templates/interactive"
   },
   {
     id: 5,
     name: "Industry Specific",
     description: "Tailored templates for specific industries and professions",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1600&auto=format&fit=crop",
-    previewUrl: "#industry"
+    previewUrl: "/templates/industry"
   }
 ];
 
@@ -70,12 +71,14 @@ const TemplateCard = ({ template }) => {
         </p>
         <div className="flex justify-between items-center mt-auto">
           <Button variant="outline" size="sm" asChild>
-            <a href={template.previewUrl}>
+            <Link to={template.previewUrl}>
               Live Demo <ExternalLink className="ml-1 h-3.5 w-3.5" />
-            </a>
+            </Link>
           </Button>
-          <Button size="sm">
-            Use Template
+          <Button size="sm" asChild>
+            <Link to={template.previewUrl}>
+              Use Template
+            </Link>
           </Button>
         </div>
       </div>
@@ -88,7 +91,9 @@ const PortfolioExamples = () => {
     <div className="mt-16">
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-2xl font-bold">Real User Examples</h3>
-        <Button variant="outline">View Gallery</Button>
+        <Button variant="outline" asChild>
+          <Link to="/portfolio-templates">View Gallery</Link>
+        </Button>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -102,7 +107,9 @@ const PortfolioExamples = () => {
             />
           </div>
           <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <Button>View Site</Button>
+            <Button asChild>
+              <Link to="/templates/professional">View Site</Link>
+            </Button>
           </div>
           <div className="p-4 bg-white">
             <h4 className="font-medium">Sarah's UX Portfolio</h4>
@@ -120,11 +127,13 @@ const PortfolioExamples = () => {
             />
           </div>
           <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <Button>View Site</Button>
+            <Button asChild>
+              <Link to="/templates/minimalist">View Site</Link>
+            </Button>
           </div>
           <div className="p-4 bg-white">
             <h4 className="font-medium">David's Dev Portfolio</h4>
-            <p className="text-sm text-gray-500">Full-Stack Developer • Creative Template</p>
+            <p className="text-sm text-gray-500">Full-Stack Developer • Minimalist Template</p>
           </div>
         </div>
         
@@ -138,11 +147,13 @@ const PortfolioExamples = () => {
             />
           </div>
           <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <Button>View Site</Button>
+            <Button asChild>
+              <Link to="/templates/creative">View Site</Link>
+            </Button>
           </div>
           <div className="p-4 bg-white">
             <h4 className="font-medium">Jessica's Architecture Portfolio</h4>
-            <p className="text-sm text-gray-500">Architect • Minimalist Template</p>
+            <p className="text-sm text-gray-500">Architect • Creative Template</p>
           </div>
         </div>
       </div>
@@ -162,6 +173,11 @@ const PortfolioPreview: React.FC = () => {
             Choose from our collection of professionally designed templates 
             that showcase your skills and experience in the best light.
           </p>
+          <div className="mt-6">
+            <Button asChild>
+              <Link to="/portfolio-templates">Browse All Templates</Link>
+            </Button>
+          </div>
         </div>
         
         <div className="relative">

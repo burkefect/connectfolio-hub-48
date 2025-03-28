@@ -9,6 +9,12 @@ import Index from "./pages/Index";
 import ResumeBuilder from "./pages/ResumeBuilder";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import PortfolioTemplates from "./pages/PortfolioTemplates";
+import MinimalistTemplate from "./pages/templates/MinimalistTemplate";
+import CreativeTemplate from "./pages/templates/CreativeTemplate";
+import ProfessionalTemplate from "./pages/templates/ProfessionalTemplate";
+import InteractiveTemplate from "./pages/templates/InteractiveTemplate";
+import IndustryTemplate from "./pages/templates/IndustryTemplate";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +29,12 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/resume-builder" element={<ResumeBuilder />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/portfolio-templates" element={<PortfolioTemplates />} />
+            <Route path="/templates/minimalist" element={<MinimalistTemplate />} />
+            <Route path="/templates/creative" element={<CreativeTemplate />} />
+            <Route path="/templates/professional" element={<ProfessionalTemplate />} />
+            <Route path="/templates/interactive" element={<InteractiveTemplate />} />
+            <Route path="/templates/industry" element={<IndustryTemplate />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
