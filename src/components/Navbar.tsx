@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X, Zap, LogOut, User } from 'lucide-react';
+import { Menu, X, Zap, LogOut, User, Moon, Sun } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -16,6 +17,7 @@ import { toast } from 'sonner';
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -28,6 +30,21 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    // Check for saved theme preference or default to light
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setIsDarkMode(savedTheme === 'dark');
+    document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = isDarkMode ? 'light' : 'dark';
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark', !isDarkMode);
+    localStorage.setItem('theme', newTheme);
+    toast.success(`${newTheme.charAt(0).toUpperCase() + newTheme.slice(1)} mode activated!`);
+  };
+
   const handleSignOut = async () => {
     await signOut();
     toast.success("Logged out successfully");
@@ -36,14 +53,18 @@ const Navbar: React.FC = () => {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all-300 ${
-      scrolled ? 'bg-white/80 backdrop-blur-xl shadow-sm' : 'bg-transparent'
+      scrolled ? 'bg-white/80 dark:bg-background/80 backdrop-blur-xl shadow-sm' : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           <div className="flex items-center">
             <Link to="/" className="font-bold text-xl tracking-tight flex items-center gap-1.5">
               <div className="bg-primary rounded-md p-1.5 text-primary-foreground flex items-center justify-center">
-                <Zap size={18} className="stroke-[2.5px]" />
+                <Zap 
+                  size={18} 
+                  className="stroke-[2.5px] cursor-pointer" 
+                  onClick={toggleTheme}
+                />
               </div>
               <span>Quikfolio</span>
             </Link>
@@ -113,7 +134,7 @@ const Navbar: React.FC = () => {
           mobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white/90 backdrop-blur-xl">
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white/90 dark:bg-background/90 backdrop-blur-xl">
           <Link 
             to="/about" 
             className="block px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground"
