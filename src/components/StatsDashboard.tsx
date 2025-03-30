@@ -1,10 +1,9 @@
 
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import ThemeAwareChart, { ChartTooltipContent } from './ThemeAwareChart';
-import { AreaChart, Area, LineChart, Line, BarChart, Bar, Cell, CartesianGrid, Tooltip, Legend, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { LineChart, Line, BarChart, Bar, Cell, CartesianGrid, Legend } from 'recharts';
 
-const responseData = [
+const data = [
   { month: 'Jan', withPortfolio: 68, withoutPortfolio: 42 },
   { month: 'Feb', withPortfolio: 72, withoutPortfolio: 38 },
   { month: 'Mar', withPortfolio: 65, withoutPortfolio: 41 },
@@ -27,190 +26,143 @@ const responseTimeData = [
   { name: 'Day 14', withPortfolio: 85, withoutPortfolio: 58 },
 ];
 
-const salaryIncreaseData = [
-  { experience: '0-2 yrs', withPortfolio: 8, withoutPortfolio: 3 },
-  { experience: '3-5 yrs', withPortfolio: 12, withoutPortfolio: 5 },
-  { experience: '6-8 yrs', withPortfolio: 15, withoutPortfolio: 7 },
-  { experience: '9+ yrs', withPortfolio: 18, withoutPortfolio: 8 },
-];
-
 const COLORS = ['#0088FE', '#E0E0E0'];
 
 const StatsDashboard: React.FC = () => {
   return (
-    <section className="py-8">
+    <section id="statistics" className="py-20 bg-secondary/30">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
+        <div className="text-center mb-16 animate-fade-in">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            Data-Driven Career Advancement
+          </h2>
+          <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+            Our data shows that candidates with professional portfolio websites consistently outperform 
+            those without, receiving more responses, interviews, and job offers.
+          </p>
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Response Rate Chart */}
-          <div className="col-span-1 lg:col-span-2">
-            <Card className="shadow-sm border-0 dark:border dark:border-gray-700">
-              <CardHeader>
-                <CardTitle>Job Response Rates</CardTitle>
-                <CardDescription>
-                  Average percentage of job applications that received a response
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ThemeAwareChart height={350}>
-                  <AreaChart
-                    data={responseData}
-                    margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip content={<ChartTooltipContent />} />
-                    <Area 
-                      type="monotone" 
-                      dataKey="withPortfolio" 
-                      name="With Portfolio"
-                      stroke="var(--color-withPortfolio)" 
-                      fill="var(--color-withPortfolio)" 
-                      fillOpacity={0.6}
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="withoutPortfolio" 
-                      name="Without Portfolio"
-                      stroke="var(--color-withoutPortfolio)" 
-                      fill="var(--color-withoutPortfolio)" 
-                      fillOpacity={0.6}
-                    />
-                    <Legend />
-                  </AreaChart>
-                </ThemeAwareChart>
-              </CardContent>
-            </Card>
+          <div className="col-span-1 lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-sm animate-slide-up">
+            <h3 className="text-xl font-semibold mb-2">Job Response Rates</h3>
+            <p className="text-sm text-foreground/70 mb-6">
+              Average percentage of job applications that received a response
+            </p>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={data}
+                  margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f1f1" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip contentStyle={{ borderRadius: '0.5rem' }} />
+                  <Area 
+                    type="monotone" 
+                    dataKey="withPortfolio" 
+                    stackId="1"
+                    stroke="#0088FE" 
+                    fill="#0088FE" 
+                    fillOpacity={0.6}
+                    name="With Portfolio"
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="withoutPortfolio" 
+                    stackId="1"
+                    stroke="#CCCCCC" 
+                    fill="#CCCCCC" 
+                    fillOpacity={0.6}
+                    name="Without Portfolio"
+                  />
+                  <Legend />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
           </div>
           
           {/* Interview Rate */}
-          <div className="col-span-1">
-            <Card className="shadow-sm border-0 dark:border dark:border-gray-700">
-              <CardHeader>
-                <CardTitle>Interview Success Rate</CardTitle>
-                <CardDescription>
-                  Percentage of applications that led to interviews
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ThemeAwareChart height={300}>
-                  <BarChart
-                    data={interviewStats}
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                    layout="vertical"
-                  >
-                    <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
-                    <XAxis type="number" domain={[0, 100]} />
-                    <YAxis type="category" dataKey="name" />
-                    <Tooltip content={<ChartTooltipContent />} formatter={(value) => [`${value}%`, 'Interview Rate']} />
-                    <Bar dataKey="value" radius={[0, 4, 4, 0]}>
-                      {interviewStats.map((entry, index) => (
-                        <Cell 
-                          key={`cell-${index}`} 
-                          fill={index === 0 ? 'var(--color-withPortfolio)' : 'var(--color-withoutPortfolio)'} 
-                        />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ThemeAwareChart>
-              </CardContent>
-            </Card>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-sm animate-slide-up animation-delay-200">
+            <h3 className="text-xl font-semibold mb-2">Interview Success Rate</h3>
+            <p className="text-sm text-foreground/70 mb-6">
+              Percentage of applications that led to interviews
+            </p>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={interviewStats}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                  layout="vertical"
+                >
+                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
+                  <XAxis type="number" domain={[0, 100]} />
+                  <YAxis type="category" dataKey="name" />
+                  <Tooltip formatter={(value) => [`${value}%`, 'Interview Rate']} />
+                  <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                    {interviewStats.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
           
           {/* Response Time */}
-          <div className="col-span-1 md:col-span-2">
-            <Card className="shadow-sm border-0 dark:border dark:border-gray-700">
-              <CardHeader>
-                <CardTitle>Response Timeline</CardTitle>
-                <CardDescription>
-                  Cumulative percentage of responses received over time
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ThemeAwareChart height={300}>
-                  <LineChart
-                    data={responseTimeData}
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis domain={[0, 100]} />
-                    <Tooltip content={<ChartTooltipContent />} formatter={(value) => [`${value}%`, 'Response Rate']} />
-                    <Legend />
-                    <Line 
-                      type="monotone" 
-                      dataKey="withPortfolio" 
-                      name="With Portfolio"
-                      stroke="var(--color-withPortfolio)" 
-                      strokeWidth={3}
-                      activeDot={{ r: 8 }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="withoutPortfolio" 
-                      name="Without Portfolio"
-                      stroke="var(--color-withoutPortfolio)"
-                      strokeWidth={3}
-                    />
-                  </LineChart>
-                </ThemeAwareChart>
-              </CardContent>
-            </Card>
-          </div>
-          
-          {/* Salary Increase */}
-          <div className="col-span-1">
-            <Card className="shadow-sm border-0 dark:border dark:border-gray-700">
-              <CardHeader>
-                <CardTitle>Salary Increase</CardTitle>
-                <CardDescription>
-                  Average percentage increase in salary offers
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ThemeAwareChart height={300}>
-                  <BarChart
-                    data={salaryIncreaseData}
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="experience" />
-                    <YAxis label={{ value: '% Increase', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip content={<ChartTooltipContent />} formatter={(value) => [`${value}%`, 'Salary Increase']} />
-                    <Legend />
-                    <Bar dataKey="withPortfolio" name="With Portfolio" fill="var(--color-withPortfolio)" />
-                    <Bar dataKey="withoutPortfolio" name="Without Portfolio" fill="var(--color-withoutPortfolio)" />
-                  </BarChart>
-                </ThemeAwareChart>
-              </CardContent>
-            </Card>
+          <div className="col-span-1 md:col-span-2 lg:col-span-3 bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-sm animate-slide-up animation-delay-400">
+            <h3 className="text-xl font-semibold mb-2">Response Timeline</h3>
+            <p className="text-sm text-foreground/70 mb-6">
+              Cumulative percentage of responses received over time
+            </p>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={responseTimeData}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis domain={[0, 100]} />
+                  <Tooltip formatter={(value) => [`${value}%`, 'Response Rate']} />
+                  <Legend />
+                  <Line 
+                    type="monotone" 
+                    dataKey="withPortfolio" 
+                    stroke="#0088FE" 
+                    strokeWidth={3}
+                    activeDot={{ r: 8 }}
+                    name="With Portfolio"
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="withoutPortfolio" 
+                    stroke="#CCCCCC"
+                    strokeWidth={3}
+                    name="Without Portfolio"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
         
-        <div className="mt-16 text-center">
-          <div className="p-6 bg-primary/5 dark:bg-primary/10 rounded-xl max-w-3xl mx-auto">
-            <p className="italic text-lg font-medium text-foreground/80">
-              "Candidates with portfolio websites receive <span className="font-bold text-primary">3.5x more interview 
-              invitations</span> and <span className="font-bold text-primary">75% faster responses</span> than those without. 
-              Additionally, they command salary offers that are <span className="font-bold text-primary">12-18% higher</span> 
-              than industry averages."
-            </p>
-          </div>
+        <div className="mt-16 text-center animate-fade-in animation-delay-600">
+          <p className="italic text-foreground/70 max-w-2xl mx-auto">
+            "The data is clear: candidates with portfolio websites receive 3.5x more interview 
+            invitations and 75% faster responses than those without."
+          </p>
         </div>
       </div>
     </section>
