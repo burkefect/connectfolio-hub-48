@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X, Zap, LogOut, User, Moon, Sun } from 'lucide-react';
+import { Menu, X, Zap, LogOut, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -13,12 +12,13 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { toast } from 'sonner';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const { user, signOut } = useAuth();
+  const { isDarkMode, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,25 +30,15 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    // Check for saved theme preference or default to light
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setIsDarkMode(savedTheme === 'dark');
-    document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = isDarkMode ? 'light' : 'dark';
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark', !isDarkMode);
-    localStorage.setItem('theme', newTheme);
-    toast.success(`${newTheme.charAt(0).toUpperCase() + newTheme.slice(1)} mode activated!`);
-  };
-
   const handleSignOut = async () => {
     await signOut();
     toast.success("Logged out successfully");
     navigate('/');
+  };
+
+  const handleThemeToggle = () => {
+    toggleTheme();
+    toast.success(`${isDarkMode ? 'Light' : 'Dark'} mode activated!`);
   };
 
   return (
@@ -59,11 +49,10 @@ const Navbar: React.FC = () => {
         <div className="flex items-center justify-between h-16 sm:h-20">
           <div className="flex items-center">
             <Link to="/" className="font-bold text-xl tracking-tight flex items-center gap-1.5">
-              <div className="bg-primary rounded-md p-1.5 text-primary-foreground flex items-center justify-center">
+              <div className="bg-primary rounded-md p-1.5 text-primary-foreground flex items-center justify-center cursor-pointer" onClick={handleThemeToggle}>
                 <Zap 
                   size={18} 
-                  className="stroke-[2.5px] cursor-pointer" 
-                  onClick={toggleTheme}
+                  className="stroke-[2.5px]" 
                 />
               </div>
               <span>Quikfolio</span>
