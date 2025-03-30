@@ -1,7 +1,11 @@
 
 import React from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { 
+  ChartContainer, 
+  ChartTooltip, 
+  ChartTooltipContent 
+} from "@/components/ui/chart";
 
 type ThemeAwareChartProps = {
   children: React.ReactNode;
@@ -39,4 +43,6 @@ const ThemeAwareChart: React.FC<ThemeAwareChartProps> = ({
   );
 };
 
+// Export the ChartTooltipContent so it can be used in other files
+export { ChartTooltipContent };
 export default ThemeAwareChart;

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import ThemeAwareChart from './ThemeAwareChart';
+import ThemeAwareChart, { ChartTooltipContent } from './ThemeAwareChart';
 import { AreaChart, Area, LineChart, Line, BarChart, Bar, Cell, CartesianGrid, Tooltip, Legend, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 
 const responseData = [
