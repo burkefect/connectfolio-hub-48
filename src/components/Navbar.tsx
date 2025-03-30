@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu, X, Zap, LogOut, User } from 'lucide-react';
@@ -65,9 +66,6 @@ const Navbar: React.FC = () => {
             </Link>
             <a href="#features" className="text-foreground/80 hover:text-foreground transition-all-300">
               Features
-            </a>
-            <a href="#statistics" className="text-foreground/80 hover:text-foreground transition-all-300">
-              Statistics
             </a>
             <a href="#pricing" className="text-foreground/80 hover:text-foreground transition-all-300">
               Pricing
@@ -137,13 +135,6 @@ const Navbar: React.FC = () => {
             onClick={() => setMobileMenuOpen(false)}
           >
             Features
-          </a>
-          <a 
-            href="#statistics" 
-            className="block px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Statistics
           </a>
           <a 
             href="#pricing" 
