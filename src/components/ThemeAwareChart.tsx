@@ -31,8 +31,11 @@ const ThemeAwareChart: React.FC<ThemeAwareChartProps> = ({
 }) => {
   const { isDarkMode } = useTheme();
   
+  // Convert height to a string value for the className to avoid type errors
+  const heightClass = typeof height === 'number' ? `h-[${height}px]` : `h-${height}`;
+  
   return (
-    <div className={`w-full h-${typeof height === 'number' ? height : 'full'} ${className || ''}`}>
+    <div className={`w-full ${heightClass} ${className || ''}`}>
       <ChartContainer 
         className="bg-white/80 dark:bg-gray-800/30 backdrop-blur-sm rounded-xl p-4 shadow-sm" 
         config={config}
