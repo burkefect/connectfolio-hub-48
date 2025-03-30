@@ -2,7 +2,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import StatsDashboard from '@/components/StatsDashboard';
+import FeaturesDashboard from '@/components/StatsDashboard';
 import PortfolioPreview from '@/components/PortfolioPreview';
 import BusinessCardPreview from '@/components/BusinessCardPreview';
 import ResumeBuilderPreview from '@/components/ResumeBuilderPreview';
@@ -16,7 +16,7 @@ const Index: React.FC = () => {
       <Navbar />
       <main className="flex-grow">
         <Hero />
-        <StatsDashboard />
+        <FeaturesDashboard />
         <PortfolioPreview />
         <ResumeBuilderPreview />
         <BusinessCardPreview />
