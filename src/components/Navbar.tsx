@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X, Zap, LogOut, User } from 'lucide-react';
+import { Menu, X, Zap, LogOut, User, BarChart2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -63,11 +64,12 @@ const Navbar: React.FC = () => {
             <Link to="/about" className="text-foreground/80 hover:text-foreground transition-all-300">
               About
             </Link>
+            <Link to="/statistics" className="text-foreground/80 hover:text-foreground transition-all-300 flex items-center gap-1">
+              <BarChart2 size={16} />
+              <span>Statistics</span>
+            </Link>
             <a href="#features" className="text-foreground/80 hover:text-foreground transition-all-300">
               Features
-            </a>
-            <a href="#statistics" className="text-foreground/80 hover:text-foreground transition-all-300">
-              Statistics
             </a>
             <a href="#pricing" className="text-foreground/80 hover:text-foreground transition-all-300">
               Pricing
@@ -131,19 +133,20 @@ const Navbar: React.FC = () => {
           >
             About
           </Link>
+          <Link 
+            to="/statistics" 
+            className="block px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground flex items-center gap-2"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <BarChart2 size={16} />
+            <span>Statistics</span>
+          </Link>
           <a 
             href="#features" 
             className="block px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground"
             onClick={() => setMobileMenuOpen(false)}
           >
             Features
-          </a>
-          <a 
-            href="#statistics" 
-            className="block px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Statistics
           </a>
           <a 
             href="#pricing" 
