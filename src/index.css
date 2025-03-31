@@ -112,6 +112,26 @@
   .text-gradient {
     @apply bg-gradient-to-r from-primary to-primary/80 text-transparent bg-clip-text;
   }
+  
+  /* Improved dark mode card visibility */
+  .dark .card-light-bg {
+    @apply bg-gray-800;
+  }
+  
+  /* Dark mode text with improved contrast */
+  .dark .dark-text-readable {
+    @apply text-gray-100;
+  }
+  
+  /* Improved readable background in dark mode for areas with text */
+  .dark .dark-bg-readable {
+    @apply bg-gray-800;
+  }
+  
+  /* For light text on potentially light backgrounds in dark mode */
+  .dark .high-contrast-text {
+    @apply text-white bg-gray-800/80 px-1 py-0.5 rounded;
+  }
 }
 
 /* Animation delay utilities */
@@ -153,3 +173,4 @@
 .transition-transform-300 {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+

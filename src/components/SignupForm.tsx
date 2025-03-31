@@ -60,9 +60,9 @@ const SignupForm: React.FC = () => {
   };
   
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-secondary/30">
+    <section className="py-20 bg-gradient-to-b from-white dark:from-gray-800 to-secondary/30 dark:to-gray-900/50">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-        <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden animate-scale-in">
+        <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden animate-scale-in">
           <div className="grid md:grid-cols-2">
             <div className="p-8 md:p-10">
               <h2 className="text-2xl font-bold mb-2">Create Your Portfolio</h2>
@@ -107,7 +107,7 @@ const SignupForm: React.FC = () => {
                   <label htmlFor="subdomain" className="block text-sm font-medium text-foreground/70 mb-1">
                     Your Portfolio Subdomain
                   </label>
-                  <div className="flex items-center p-3 bg-secondary/30 rounded-md">
+                  <div className="flex items-center p-3 bg-secondary/30 dark:bg-gray-700 rounded-md">
                     <Globe className="h-4 w-4 text-primary mr-2" />
                     <span className="text-sm font-medium">{subdomainPreview}</span>
                   </div>
@@ -136,7 +136,7 @@ const SignupForm: React.FC = () => {
                     LinkedIn Profile URL
                   </label>
                   <div className="flex">
-                    <div className="bg-secondary flex items-center px-3 rounded-l-md border border-r-0 border-input">
+                    <div className="bg-secondary dark:bg-gray-700 flex items-center px-3 rounded-l-md border border-r-0 border-input">
                       <Linkedin className="h-4 w-4 text-foreground/70" />
                     </div>
                     <Input

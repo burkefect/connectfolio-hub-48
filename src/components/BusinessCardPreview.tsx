@@ -81,13 +81,13 @@ const BusinessCardPreview: React.FC = () => {
   };
   
   return (
-    <section id="business-cards" className="py-20 bg-secondary/30">
+    <section id="business-cards" className="py-20 bg-secondary/30 dark:bg-gray-800/50">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         <div className="text-center mb-12 animate-fade-in">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             Digital Business Cards
           </h2>
-          <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
+          <p className="text-lg text-foreground/70 dark:text-gray-300 max-w-3xl mx-auto">
             Stand out at job fairs and networking events with professional business cards 
             that match your portfolio site. Available with Pro and Executive plans.
           </p>
@@ -95,7 +95,7 @@ const BusinessCardPreview: React.FC = () => {
         
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="order-2 md:order-1">
-            <Card className="p-6 bg-white border shadow-md">
+            <Card className="p-6 bg-white dark:bg-gray-800 border shadow-md">
               <h3 className="text-xl font-semibold mb-4">Premium Feature Highlights</h3>
               <ul className="space-y-3">
                 <li className="flex items-start">
@@ -158,7 +158,7 @@ const BusinessCardPreview: React.FC = () => {
                 </Button>
               </div>
               
-              <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-full max-w-[300px] h-[150px] bg-gradient-to-t from-secondary/50 to-transparent -z-10 blur-2xl opacity-60 rounded-full"></div>
+              <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 w-full max-w-[300px] h-[150px] bg-gradient-to-t from-secondary/50 dark:from-gray-700/50 to-transparent -z-10 blur-2xl opacity-60 rounded-full"></div>
             </div>
           </div>
         </div>
