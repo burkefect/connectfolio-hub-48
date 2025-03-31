@@ -132,6 +132,21 @@
   .dark .high-contrast-text {
     @apply text-white bg-gray-800/80 px-1 py-0.5 rounded;
   }
+  
+  /* Dark mode specific utility for better contrast on badges */
+  .dark .dark-badge {
+    @apply bg-gray-700 text-gray-100 border-gray-600;
+  }
+  
+  /* Dark mode specific utility for better readability in sections with light backgrounds */
+  .dark .dark-section {
+    @apply bg-gray-900 text-gray-100;
+  }
+  
+  /* Dark mode specific utility for text that might be hard to read on certain backgrounds */
+  .dark .dark-improved-contrast {
+    @apply text-gray-100;
+  }
 }
 
 /* Animation delay utilities */
@@ -173,4 +188,3 @@
 .transition-transform-300 {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
