@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form } from "@/components/ui/form";
@@ -6,13 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { FileDown, Eye, Save } from "lucide-react";
 import ResumePreview from "@/components/ResumePreview";
-import { FormData } from './resume/types';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 
-// Import all form section components
 import PersonalInfoForm from './resume/PersonalInfoForm';
 import SummaryForm from './resume/SummaryForm';
 import ExperienceForm from './resume/ExperienceForm';
@@ -84,7 +81,6 @@ const ResumeForm: React.FC = () => {
       let result;
       
       if (resumeId) {
-        // Update existing resume
         result = await supabase
           .from('resumes')
           .update({
@@ -97,7 +93,6 @@ const ResumeForm: React.FC = () => {
           .eq('id', resumeId)
           .select();
       } else {
-        // Create new resume
         const newId = uuidv4();
         result = await supabase
           .from('resumes')
@@ -120,7 +115,6 @@ const ResumeForm: React.FC = () => {
         throw result.error;
       }
 
-      // Log user activity
       await supabase.rpc('log_user_activity', {
         p_user_id: user.id,
         p_activity_type: resumeId ? 'update' : 'create',
@@ -145,12 +139,9 @@ const ResumeForm: React.FC = () => {
         return;
       }
 
-      // Save before downloading
       await saveResume();
       
-      // In a real app, this would generate and download the resume
       toast.success('Generating your resume for download...');
-      // Simulate PDF generation delay
       setTimeout(() => {
         toast.success('Resume downloaded successfully!');
       }, 1500);
@@ -162,7 +153,6 @@ const ResumeForm: React.FC = () => {
 
   const watchData = form.watch();
 
-  // Load resume data if user is logged in and has a saved resume
   useEffect(() => {
     const loadResumeData = async () => {
       if (!user) return;
@@ -201,7 +191,6 @@ const ResumeForm: React.FC = () => {
       <div className="lg:col-span-2">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            {/* Resume Title */}
             <div className="flex items-center gap-4 mb-4">
               <div className="flex-1">
                 <Label htmlFor="resume-title">Resume Title</Label>
@@ -233,22 +222,16 @@ const ResumeForm: React.FC = () => {
               </Button>
             </div>
             
-            {/* Personal Information */}
             <PersonalInfoForm form={form} />
             
-            {/* Professional Summary */}
             <SummaryForm form={form} />
             
-            {/* Work Experience */}
             <ExperienceForm form={form} />
             
-            {/* Education */}
             <EducationForm form={form} />
             
-            {/* Skills */}
             <SkillsForm form={form} />
             
-            {/* Template Selection */}
             <TemplateSelector form={form} setSelectedTemplate={setSelectedTemplate} />
             
             <div className="flex justify-between">
