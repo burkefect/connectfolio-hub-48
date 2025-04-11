@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form } from "@/components/ui/form";
@@ -9,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
+import { FormData as ResumeFormData } from './resume/types';
 
 import PersonalInfoForm from './resume/PersonalInfoForm';
 import SummaryForm from './resume/SummaryForm';
@@ -28,7 +30,7 @@ const ResumeForm: React.FC = () => {
   const [isPublic, setIsPublic] = useState(false);
   const { user } = useAuth();
   
-  const form = useForm<FormData>({
+  const form = useForm<ResumeFormData>({
     defaultValues: {
       personalInfo: {
         fullName: '',
@@ -85,7 +87,7 @@ const ResumeForm: React.FC = () => {
           .from('resumes')
           .update({
             title: resumeTitle,
-            data: formData,
+            data: formData as unknown as Json,
             template_id: selectedTemplate,
             is_public: isPublic,
             updated_at: new Date().toISOString()
@@ -100,7 +102,7 @@ const ResumeForm: React.FC = () => {
             id: newId,
             user_id: user.id,
             title: resumeTitle,
-            data: formData,
+            data: formData as unknown as Json,
             template_id: selectedTemplate,
             is_public: isPublic
           })
@@ -132,7 +134,7 @@ const ResumeForm: React.FC = () => {
     }
   };
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: ResumeFormData) => {
     try {
       if (!user) {
         toast.error('You need to be logged in to download your resume');
@@ -176,7 +178,7 @@ const ResumeForm: React.FC = () => {
           setResumeTitle(resume.title);
           setSelectedTemplate(resume.template_id);
           setIsPublic(resume.is_public || false);
-          form.reset(resume.data as FormData);
+          form.reset(resume.data as unknown as ResumeFormData);
         }
       } catch (error) {
         console.error('Unexpected error loading resume:', error);

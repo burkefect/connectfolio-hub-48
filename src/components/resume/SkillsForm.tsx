@@ -4,10 +4,10 @@ import { FormItem, FormLabel, FormControl, FormDescription } from "@/components/
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { UseFormReturn } from "react-hook-form";
-import { FormData } from './types';
+import { FormData as ResumeFormData } from './types';
 
 interface SkillsFormProps {
-  form: UseFormReturn<FormData>;
+  form: UseFormReturn<ResumeFormData>;
 }
 
 const SkillsForm: React.FC<SkillsFormProps> = ({ form }) => {

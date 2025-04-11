@@ -3,10 +3,10 @@ import React from 'react';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UseFormReturn } from "react-hook-form";
-import { FormData } from './types';
+import { FormData as ResumeFormData } from './types';
 
 interface TemplateSelectorProps {
-  form: UseFormReturn<FormData>;
+  form: UseFormReturn<ResumeFormData>;
   setSelectedTemplate: (value: string) => void;
 }
 

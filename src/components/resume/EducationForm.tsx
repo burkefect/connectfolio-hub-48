@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Trash2, Plus } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
-import { FormData } from './types';
+import { FormData as ResumeFormData } from './types';
 
 interface EducationFormProps {
-  form: UseFormReturn<FormData>;
+  form: UseFormReturn<ResumeFormData>;
 }
 
 const EducationForm: React.FC<EducationFormProps> = ({ form }) => {

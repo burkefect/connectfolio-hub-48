@@ -3,10 +3,10 @@ import React from 'react';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UseFormReturn } from "react-hook-form";
-import { FormData } from './types';
+import { FormData as ResumeFormData } from './types';
 
 interface PersonalInfoFormProps {
-  form: UseFormReturn<FormData>;
+  form: UseFormReturn<ResumeFormData>;
 }
 
 const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({ form }) => {
