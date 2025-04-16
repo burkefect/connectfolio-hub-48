@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { FileDown, Eye, Save, Loader2 } from "lucide-react";
+import { Eye, Save, Loader2 } from "lucide-react";
 import ResumePreview from "@/components/ResumePreview";
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -14,6 +14,7 @@ import { Json } from '@/integrations/supabase/types';
 import { FormData as ResumeFormData } from './resume/types';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import DownloadOptions from './resume/DownloadOptions';
 
 import PersonalInfoForm from './resume/PersonalInfoForm';
 import SummaryForm from './resume/SummaryForm';
@@ -197,22 +198,12 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ selectedTemplateFromUrl }) => {
   };
 
   const onSubmit = async (data: ResumeFormData) => {
-    try {
-      if (!user) {
-        toast.error('You need to be logged in to download your resume');
-        return;
-      }
-
-      await saveResume();
-      
-      toast.success('Generating your resume for download...');
-      setTimeout(() => {
-        toast.success('Resume downloaded successfully!');
-      }, 1500);
-    } catch (error: any) {
-      console.error('Error generating resume:', error);
-      toast.error(`Failed to generate resume: ${error.message || 'Unknown error'}`);
+    if (!user) {
+      toast.error('You need to be logged in to download your resume');
+      return;
     }
+
+    await saveResume();
   };
 
   const watchData = form.watch();
@@ -365,14 +356,11 @@ const ResumeForm: React.FC<ResumeFormProps> = ({ selectedTemplateFromUrl }) => {
                 </Sheet>
                 
                 <div className="space-x-2">
-                  <Button 
-                    type="submit" 
-                    className="bg-primary" 
+                  <DownloadOptions 
+                    resumeData={watchData} 
+                    templateId={selectedTemplate} 
                     disabled={!user || (resumeCount >= 3 && !resumeId)}
-                  >
-                    <FileDown className="mr-2 h-4 w-4" />
-                    Download Resume
-                  </Button>
+                  />
                 </div>
               </div>
 
