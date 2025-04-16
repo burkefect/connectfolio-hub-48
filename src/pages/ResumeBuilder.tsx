@@ -11,6 +11,7 @@ const ResumeBuilder: React.FC = () => {
   const [searchParams] = useSearchParams();
   const tabParam = searchParams.get('tab');
   const templateParam = searchParams.get('template');
+  const resumeIdParam = searchParams.get('resumeId');
   const [activeTab, setActiveTab] = useState<string>(tabParam === 'templates' ? 'templates' : 'builder');
   
   useEffect(() => {
@@ -18,7 +19,12 @@ const ResumeBuilder: React.FC = () => {
     if (tabParam === 'templates' || tabParam === 'builder') {
       setActiveTab(tabParam);
     }
-  }, [tabParam]);
+    
+    // If resumeId is provided, always show builder tab
+    if (resumeIdParam) {
+      setActiveTab('builder');
+    }
+  }, [tabParam, resumeIdParam]);
 
   return (
     <div className="min-h-screen flex flex-col">

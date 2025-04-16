@@ -17,6 +17,7 @@ import ProfessionalTemplate from "./pages/templates/ProfessionalTemplate";
 import InteractiveTemplate from "./pages/templates/InteractiveTemplate";
 import IndustryTemplate from "./pages/templates/IndustryTemplate";
 import About from "./pages/About";
+import MyResumes from "./pages/MyResumes";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/home" element={<Navigate to="/" replace />} />
               <Route path="/resume-builder" element={<ResumeBuilder />} />
+              <Route path="/my-resumes" element={<MyResumes />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/portfolio-templates" element={<PortfolioTemplates />} />
               <Route path="/about" element={<About />} />

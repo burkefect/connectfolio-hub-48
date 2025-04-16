@@ -37,7 +37,12 @@ const ResumeTemplates: React.FC = () => {
 
   const handleUseTemplate = (templateId: string) => {
     // Navigate to the builder tab with template parameter
-    navigate('/resume-builder?tab=builder&template=' + templateId);
+    navigate(`/resume-builder?tab=builder&template=${templateId}`);
+  };
+
+  const handlePreviewTemplate = (templateId: string) => {
+    // For now, just show a toast or alert that this feature is coming soon
+    alert(`Preview for ${templateId} template coming soon!`);
   };
 
   return (
@@ -69,7 +74,7 @@ const ResumeTemplates: React.FC = () => {
               </div>
             </CardContent>
             <CardFooter className="flex justify-between">
-              <Button variant="outline">Preview</Button>
+              <Button variant="outline" onClick={() => handlePreviewTemplate(template.id)}>Preview</Button>
               <Button onClick={() => handleUseTemplate(template.id)}>Use Template</Button>
             </CardFooter>
           </Card>
