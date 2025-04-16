@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from 'react-router-dom';
 
 const templates = [
   {
@@ -32,6 +33,13 @@ const templates = [
 ];
 
 const ResumeTemplates: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleUseTemplate = (templateId: string) => {
+    // Navigate to the builder tab with template parameter
+    navigate('/resume-builder?tab=builder&template=' + templateId);
+  };
+
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -62,7 +70,7 @@ const ResumeTemplates: React.FC = () => {
             </CardContent>
             <CardFooter className="flex justify-between">
               <Button variant="outline">Preview</Button>
-              <Button>Use Template</Button>
+              <Button onClick={() => handleUseTemplate(template.id)}>Use Template</Button>
             </CardFooter>
           </Card>
         ))}

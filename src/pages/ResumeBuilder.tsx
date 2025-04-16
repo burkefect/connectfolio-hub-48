@@ -1,12 +1,25 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ResumeForm from '@/components/ResumeForm';
 import ResumeTemplates from '@/components/ResumeTemplates';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useSearchParams } from 'react-router-dom';
 
 const ResumeBuilder: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  const templateParam = searchParams.get('template');
+  const [activeTab, setActiveTab] = useState<string>(tabParam === 'templates' ? 'templates' : 'builder');
+  
+  useEffect(() => {
+    // Set tab based on URL parameter
+    if (tabParam === 'templates' || tabParam === 'builder') {
+      setActiveTab(tabParam);
+    }
+  }, [tabParam]);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -18,13 +31,13 @@ const ResumeBuilder: React.FC = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="builder" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
             <TabsTrigger value="builder">Build Resume</TabsTrigger>
             <TabsTrigger value="templates">Templates</TabsTrigger>
           </TabsList>
           <TabsContent value="builder">
-            <ResumeForm />
+            <ResumeForm selectedTemplateFromUrl={templateParam} />
           </TabsContent>
           <TabsContent value="templates">
             <ResumeTemplates />

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Menu, X, Zap, LogOut, User } from 'lucide-react';
+import { Menu, X, Zap, LogOut, User, Home } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -61,6 +61,10 @@ const Navbar: React.FC = () => {
           </div>
           
           <nav className="hidden md:flex items-center space-x-8">
+            <Link to="/" className="text-foreground/80 hover:text-foreground transition-all-300 flex items-center gap-1">
+              <Home size={16} />
+              <span>Home</span>
+            </Link>
             <Link to="/about" className="text-foreground/80 hover:text-foreground transition-all-300">
               About
             </Link>
@@ -122,6 +126,14 @@ const Navbar: React.FC = () => {
         }`}
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white/90 dark:bg-background/90 backdrop-blur-xl">
+          <Link 
+            to="/" 
+            className="flex items-center gap-1 px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Home size={16} />
+            <span>Home</span>
+          </Link>
           <Link 
             to="/about" 
             className="block px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground"

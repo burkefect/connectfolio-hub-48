@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Form } from "@/components/ui/form";
@@ -22,7 +23,11 @@ import ResumeTips from './resume/ResumeTips';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 
-const ResumeForm: React.FC = () => {
+interface ResumeFormProps {
+  selectedTemplateFromUrl?: string | null;
+}
+
+const ResumeForm: React.FC<ResumeFormProps> = ({ selectedTemplateFromUrl }) => {
   const [selectedTemplate, setSelectedTemplate] = useState('classic');
   const [resumeTitle, setResumeTitle] = useState('My Resume');
   const [resumeId, setResumeId] = useState<string | null>(null);
@@ -68,6 +73,15 @@ const ResumeForm: React.FC = () => {
       templateId: 'classic',
     },
   });
+
+  // Apply the template from URL if provided
+  useEffect(() => {
+    if (selectedTemplateFromUrl) {
+      setSelectedTemplate(selectedTemplateFromUrl);
+      form.setValue('templateId', selectedTemplateFromUrl);
+      toast.success(`${selectedTemplateFromUrl.charAt(0).toUpperCase() + selectedTemplateFromUrl.slice(1)} template selected!`);
+    }
+  }, [selectedTemplateFromUrl, form]);
 
   const saveResume = async () => {
     if (!user) {
