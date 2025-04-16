@@ -34,6 +34,7 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({
     
     try {
       console.log('Calling generate-resume function with format:', format);
+      toast.info(`Generating ${format.toUpperCase()} resume...`);
       
       // Call the Supabase Edge Function to generate the resume
       const { data, error } = await supabase.functions.invoke('generate-resume', {

@@ -1,8 +1,8 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import * as pdfMake from "https://esm.sh/pdfmake@0.2.7";
-import type { TDocumentDefinitions } from "https://esm.sh/v135/pdfmake@0.2.7/interfaces";
-import * as JSZip from "https://esm.sh/jszip@3.10.1";
+import pdfMake from "https://esm.sh/pdfmake@0.2.7";
+import { TDocumentDefinitions } from "https://esm.sh/v135/pdfmake@0.2.7/interfaces";
+import JSZip from "https://esm.sh/jszip@3.10.1";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 // CORS headers for browser requests
@@ -20,6 +20,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
+    console.log('Handling CORS preflight request');
     return new Response(null, { headers: corsHeaders });
   }
 
@@ -274,10 +275,10 @@ async function generatePdfBuffer(docDefinition: TDocumentDefinitions): Promise<U
   return new Promise((resolve, reject) => {
     try {
       // Create the PDF
-      const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+      const pdfDoc = pdfMake.createPdf(docDefinition);
       
       // Get buffer
-      pdfDocGenerator.getBuffer((buffer) => {
+      pdfDoc.getBuffer((buffer: Uint8Array) => {
         console.log('PDF buffer generated successfully, size:', buffer.length);
         resolve(buffer);
       });
