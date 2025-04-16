@@ -33,6 +33,8 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({
     setDownloadFormat(format);
     
     try {
+      console.log('Calling generate-resume function with format:', format);
+      
       // Call the Supabase Edge Function to generate the resume
       const { data, error } = await supabase.functions.invoke('generate-resume', {
         body: {
@@ -42,16 +44,21 @@ const DownloadOptions: React.FC<DownloadOptionsProps> = ({
         }
       });
 
+      console.log('Function response:', { data, error });
+
       if (error) {
+        console.error('Function error:', error);
         throw new Error(error.message || 'Failed to generate resume');
       }
 
       if (!data || !data.success) {
+        console.error('Function returned unsuccessful response:', data);
         throw new Error(data?.error || 'Failed to generate resume');
       }
 
       // Convert the array back to Uint8Array
       const fileBuffer = new Uint8Array(data.file);
+      console.log('File buffer received, size:', fileBuffer.length);
       
       // Create a blob from the file buffer
       const blob = new Blob([fileBuffer], { type: data.contentType });

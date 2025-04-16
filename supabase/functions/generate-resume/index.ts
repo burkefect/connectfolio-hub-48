@@ -24,9 +24,29 @@ serve(async (req) => {
   }
 
   try {
-    const { resumeData, format, templateId } = await req.json();
+    console.log('Function invoked with method:', req.method);
+    let body;
+    try {
+      body = await req.json();
+      console.log('Request body parsed successfully');
+    } catch (parseError) {
+      console.error('Error parsing request body:', parseError);
+      return new Response(
+        JSON.stringify({ error: 'Invalid JSON in request body' }),
+        { status: 400, headers: corsHeaders }
+      );
+    }
     
-    // Validate input
+    const { resumeData, format, templateId } = body;
+    
+    // Validate input and log
+    console.log('Received parameters:', { 
+      hasResumeData: !!resumeData, 
+      format, 
+      templateId,
+      resumeDataKeys: resumeData ? Object.keys(resumeData) : 'none'
+    });
+    
     if (!resumeData || !format || !templateId) {
       return new Response(
         JSON.stringify({ error: 'Missing required fields: resumeData, format, templateId' }),
@@ -46,38 +66,58 @@ serve(async (req) => {
     let contentType: string;
     let filename: string;
 
-    // Generate the appropriate file format
-    if (format === 'pdf') {
-      const pdfDoc = generatePdfDocument(resumeData, templateId);
-      fileBuffer = await generatePdfBuffer(pdfDoc);
-      contentType = 'application/pdf';
-      filename = `resume_${Date.now()}.pdf`;
-    } else {
-      // Generate Word document
-      fileBuffer = await generateWordDocument(resumeData, templateId);
-      contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-      filename = `resume_${Date.now()}.docx`;
-    }
+    console.log(`Generating ${format} document with template: ${templateId}`);
 
-    // Create response with file data
+    try {
+      // Generate the appropriate file format
+      if (format === 'pdf') {
+        const pdfDoc = generatePdfDocument(resumeData, templateId);
+        fileBuffer = await generatePdfBuffer(pdfDoc);
+        contentType = 'application/pdf';
+        filename = `resume_${Date.now()}.pdf`;
+        console.log('PDF document generated successfully');
+      } else {
+        // Generate Word document
+        fileBuffer = await generateWordDocument(resumeData, templateId);
+        contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        filename = `resume_${Date.now()}.docx`;
+        console.log('Word document generated successfully');
+      }
+
+      console.log(`File generated successfully: ${filename}, size: ${fileBuffer.length} bytes`);
+      
+      // Create response with file data
+      return new Response(
+        JSON.stringify({ 
+          success: true,
+          file: Array.from(fileBuffer), // Convert to array for JSON transmission
+          filename,
+          contentType
+        }),
+        { 
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+    } catch (generationError) {
+      console.error(`Error generating ${format} document:`, generationError);
+      return new Response(
+        JSON.stringify({ 
+          error: `Failed to generate ${format} document: ${generationError.message || 'Unknown error'}` 
+        }),
+        { status: 500, headers: corsHeaders }
+      );
+    }
+  } catch (error) {
+    console.error('Unhandled error in generate-resume function:', error);
     return new Response(
       JSON.stringify({ 
-        success: true,
-        file: Array.from(fileBuffer), // Convert to array for JSON transmission
-        filename,
-        contentType
+        error: 'Failed to generate resume file', 
+        details: error.message || 'Unknown error',
+        stack: error.stack || 'No stack trace available'
       }),
-      { 
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json',
-        }
-      }
-    );
-  } catch (error) {
-    console.error('Error generating resume:', error);
-    return new Response(
-      JSON.stringify({ error: 'Failed to generate resume file' }),
       { status: 500, headers: corsHeaders }
     );
   }
@@ -85,6 +125,8 @@ serve(async (req) => {
 
 // Function to generate PDF document definition based on template
 function generatePdfDocument(data: any, templateId: string): TDocumentDefinitions {
+  console.log('Generating PDF document with template:', templateId);
+  
   // Base styles for all templates
   const baseStyles = {
     header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
@@ -228,6 +270,7 @@ function generatePdfDocument(data: any, templateId: string): TDocumentDefinition
 
 // Generate PDF buffer from document definition
 async function generatePdfBuffer(docDefinition: TDocumentDefinitions): Promise<Uint8Array> {
+  console.log('Generating PDF buffer from document definition');
   return new Promise((resolve, reject) => {
     try {
       // Create the PDF
@@ -235,9 +278,11 @@ async function generatePdfBuffer(docDefinition: TDocumentDefinitions): Promise<U
       
       // Get buffer
       pdfDocGenerator.getBuffer((buffer) => {
+        console.log('PDF buffer generated successfully, size:', buffer.length);
         resolve(buffer);
       });
     } catch (error) {
+      console.error('Error generating PDF buffer:', error);
       reject(error);
     }
   });
@@ -245,6 +290,7 @@ async function generatePdfBuffer(docDefinition: TDocumentDefinitions): Promise<U
 
 // Generate Word document from resume data
 async function generateWordDocument(data: any, templateId: string): Promise<Uint8Array> {
+  console.log('Generating Word document with template:', templateId);
   const zip = new JSZip();
   
   // Create simple XML for Word document
@@ -376,7 +422,14 @@ async function generateWordDocument(data: any, templateId: string): Promise<Uint
     <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
     </Relationships>`);
 
-  // Generate ZIP file
-  const zipContent = await zip.generateAsync({ type: "uint8array" });
-  return zipContent;
+  try {
+    // Generate ZIP file
+    console.log('Generating ZIP file for Word document');
+    const zipContent = await zip.generateAsync({ type: "uint8array" });
+    console.log('Word document ZIP generated successfully, size:', zipContent.length);
+    return zipContent;
+  } catch (error) {
+    console.error('Error generating Word document ZIP:', error);
+    throw error;
+  }
 }
